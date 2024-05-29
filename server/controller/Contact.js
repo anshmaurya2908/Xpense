@@ -59,7 +59,9 @@ contactRouter.post('/addcontact',async(req,res)=>{
 contactRouter.post('/removecontact',async(req,res)=>{
     const user=await LoggedInUser(req);
     const {id}=req.body;
-    const deletedContact=await Contact.findByIdAndDelete({id});
+    if(!id) res.status(201).json({message:id});
+    const deletedContact=await Contact.findByIdAndDelete(id);
+    if(!deletedContact) res.status(201).json({message:id});
     removeContactFromUserSchema(user._id,deletedContact);
     res.status(200).json({success:true,message:"contact removed"});
 })
