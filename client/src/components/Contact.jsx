@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import delete_img from '../assets/delete_img.jpg'
+import { Link } from 'react-router-dom';
+import ConatctDetails from './ConatctDetails';
 const baseUrl='http://localhost:8000';
 //component for adding input boxes to 
 // add new contacts.
@@ -44,9 +46,13 @@ const AddNewContact = ({fetchContacts ,setVisible}) => {
     </>
   )
 }
-const removeConatct=async(contactID,fetchContacts)=>{
+const removeConatct=async(contact,fetchContacts)=>{
+  let confirm=await window.confirm(`Remove ${contact.name} from the user friend list`);
+  if(!confirm){
+    return;
+  }
   await axios.post(`${baseUrl}/removecontact`,
-    JSON.stringify({id:contactID}),
+    JSON.stringify({id:contact._id}),
     {
       headers: {
         'Content-Type': 'application/json'
@@ -93,10 +99,10 @@ function Contact() {
           {contacts.map((contact, index) => (
             <div key={contact._id} className="grid grid-cols-12 gap-4">
               <p className="col-span-1">{index+1}</p>
-              <p className="col-span-4">{contact.name}</p>
+              <p className="col-span-4" > <Link to={`/contactdetails`}>{contact.name}</Link></p>
               <p className="col-span-4">{contact.number}</p>
               <p className="col-span-2">{Total(contact.expenses)}</p>
-              <img src={delete_img} onClick={()=>removeConatct(contact._id,fetchContacts)}alt="remove" className="col-span-1" />
+              <img src={delete_img} onClick={()=>removeConatct(contact,fetchContacts)}alt="remove" className="col-span-1" />
             </div>
           ))}
         </div>

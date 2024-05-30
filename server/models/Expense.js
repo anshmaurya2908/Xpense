@@ -6,7 +6,7 @@ const expenseSchema = mongoose.Schema({
     },
     Balance:{
         type: Number,
-        required: true,
+        Default:0
     },
     Credit_Debit:{
         type: String,

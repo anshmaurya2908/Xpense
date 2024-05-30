@@ -18,7 +18,7 @@ const LoggedInUser=async(req,res)=>{
 userRouter.get('/profile',async(req,res)=>{
     const user=await LoggedInUser(req);
     if(!user)
-        res.status(401).json({message:"user not logged in"});
+        res.status(200).json({message:"user not logged in"} );
     res.json(user);
 })
 userRouter.get('/contacts',async(req,res)=>{

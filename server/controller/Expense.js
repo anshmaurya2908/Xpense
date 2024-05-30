@@ -17,13 +17,9 @@ expenseRouter.post('/',async(req,res)=>{
     // get data from user
     const Amount = parseInt(req.body.Amount);
     const Balance = parseInt(req.body.Balance);
-    const { Credit_Debit, Reason, Category, historyArray: incomingHistoryArray } = req.body;
-
-    // check if incoming array is a array
-    historyArray = Array.isArray(incomingHistoryArray) ? incomingHistoryArray : [];
-
+    const { Credit_Debit, Reason, Category } = req.body;
     // check all the fields are entered
-    if (!(Amount !== undefined && Balance !== undefined && Reason && Category && Credit_Debit !== undefined)) {
+    if (!(Amount !== undefined  && Reason && Category && Credit_Debit !== undefined)) {
         return res.status(400).json({ message: 'Enter all the fields' });
     }
     // Initialize the historyArray if it's empty
@@ -32,27 +28,12 @@ expenseRouter.post('/',async(req,res)=>{
     //     historyArray.push({ amount: 0, balance: 0, reason: "NA", category: "NA", time: Time });
     // }
     // Increase balance if Credit and Decrease the balance if Debit
-    let newBalance = 0;
-    if (Credit_Debit === "credit") {
-        // credit means '+'
-        newBalance = Balance + Amount;
-    }
-    else if (Credit_Debit === "debit") {
-        // debit means '-'
-        newBalance = Balance - Amount;
-    }
-    // calling addTimeStamp to get time
     const Time = await addTimestamp();
-
-    // push required data into historyArray
-    historyArray.push({ amount: Amount, balance: newBalance, reason: Reason, category: Category, time: Time });
     const expense=new Expense({
         Amount,
-        Balance,
         Credit_Debit,
         Reason,
         Category,
-        historyArray
     })
     console.log("THIS IS THE EXPENSE FROM THE CONTROLLER");
     return res.status(200).json({ message: "expense created successfully", expense });

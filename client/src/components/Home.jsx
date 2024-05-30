@@ -5,7 +5,6 @@ import twitter from '../assets/twitterBW.svg';
 import facebook from '../assets/facebook.svg';
 import instagram from '../assets/instagram.svg';
 import linkedin from '../assets/linkedin.svg';
-
 function Home() {
   return (
     <div className="text-white min-h-screen bg-[#1c1c1c] flex flex-col">
@@ -23,7 +22,7 @@ function Home() {
           </div>
           <div className='flex gap-x-5 mt-6'>
             <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-3 px-6 rounded-lg text-lg transition-all duration-300">
-              <Link to={"/login"}>Create an Account</Link>
+              <Link to={"/signup"}>Create an Account</Link>
             </button>
             <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-3 px-6 rounded-lg text-lg transition-all duration-300">
               <Link to={"/about"}>Learn More</Link>

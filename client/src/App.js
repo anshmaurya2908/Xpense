@@ -6,16 +6,13 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import ExpensePage from "./components/ExpensePage";
 import About from "./components/About";
 import Contact from "./components/Contact";
-
+import ConatctDetails from "./components/ConatctDetails";
 function App() {
   return (
     <>
       <BrowserRouter>
-        
         <Navbar />
-
         <div>
-
           <Routes>
             <Route path="/" element={<Home />} />
           </Routes>
@@ -38,6 +35,9 @@ function App() {
 
           <Routes>
             <Route path="/expensepage" element={<ExpensePage />} />
+          </Routes>
+           <Routes>
+            <Route path="/contactdetails" element={<ConatctDetails />} />
           </Routes>
         </div>
       </BrowserRouter>
