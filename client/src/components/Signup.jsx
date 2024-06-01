@@ -35,7 +35,7 @@ function Signup() {
     try {
 
       const res = await axios.post(`${process.env.REACT_APP_USER_SIGNUP}`, {
-        userName: userName,
+        username: userName,
         email: email,
         password: password,
       });
@@ -63,7 +63,6 @@ function Signup() {
       console.log("error : ", error);
     }
   }
-
   return (
     <div className='h-screen w-[100%] bg-[#1c1c1c]
      flex justify-center items-center'>
