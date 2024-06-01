@@ -1,18 +1,13 @@
 const mongoose=require('mongoose');
 const historySchema=new mongoose.Schema({
-    Amount: {
+    amount: {
         type: Number,
         required: true,
     },
-    Credit_Debit:{
+    description: {
         type: String,
-        required: true,
     },
-    Reason: {
-        type: String,
-        required: true,
-    },
-    Category: {
+    category: {
         type: String,
         required: true
     },

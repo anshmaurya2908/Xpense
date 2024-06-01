@@ -1,5 +1,6 @@
 const userRouter=require('express').Router();
 const Contact=require('../models/Contact');
+const mongoose=require('mongoose');
 const User = require('../models/User');
 const {userVerify} =require('../service/auth')
 const LoggedInUser=async(req,res)=>{
@@ -26,7 +27,12 @@ userRouter.get('/contacts',async(req,res)=>{
     if(!user)
         res.status(401).json({message:"user not logged in"});
     try{
-    const details=await User.findById(user._id).populate('contacts');
+    const details=await User.findById(user._id).populate({
+        path: 'contacts',
+        populate: {
+            path: 'expenses'
+        }
+    });
     res.json({contactList:details});
     }
     catch(error){

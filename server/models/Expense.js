@@ -1,22 +1,14 @@
 const mongoose = require('mongoose');
 const expenseSchema = mongoose.Schema({
-    Amount: {
+    amount: {
         type: Number,
         required: true,
     },
-    Balance:{
-        type: Number,
-        Default:0
-    },
-    Credit_Debit:{
+    description: {
         type: String,
         required: true,
     },
-    Reason: {
-        type: String,
-        required: true,
-    },
-    Category: {
+    category: {
         type: String,
         required: true
     },

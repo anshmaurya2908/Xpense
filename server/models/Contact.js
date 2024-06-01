@@ -18,5 +18,5 @@ const contactSchema=new mongoose.Schema({
     }
     // we could add expense Schema in referene 
     // for a separate page of each conatct of user;
-})
+},)
 module.exports=mongoose.model('Contact',contactSchema);

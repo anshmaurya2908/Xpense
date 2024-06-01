@@ -1,5 +1,6 @@
 const expenseRouter = require('express').Router();
 const Expense= require('../models/Expense');
+const Contact=require('../models/Contact');
 // function to handle date and time. Required to push into historyArray
 async function addTimestamp() {
     const currentDate = new Date();
@@ -15,27 +16,24 @@ async function addTimestamp() {
 }
 expenseRouter.post('/',async(req,res)=>{
     // get data from user
-    const Amount = parseInt(req.body.Amount);
-    const Balance = parseInt(req.body.Balance);
-    const { Credit_Debit, Reason, Category } = req.body;
+    const amount = parseInt(req.body.amount);
+    const { description, category,contactId } = req.body;
     // check all the fields are entered
-    if (!(Amount !== undefined  && Reason && Category && Credit_Debit !== undefined)) {
+    if (!(amount !== undefined  && category )) {
         return res.status(400).json({ message: 'Enter all the fields' });
     }
-    // Initialize the historyArray if it's empty
-    // if (historyArray.length === 0) {
-    //     const Time = await addTimestamp();
-    //     historyArray.push({ amount: 0, balance: 0, reason: "NA", category: "NA", time: Time });
-    // }
-    // Increase balance if Credit and Decrease the balance if Debit
-    const Time = await addTimestamp();
     const expense=new Expense({
-        Amount,
-        Credit_Debit,
-        Reason,
-        Category,
-    })
+        amount,
+        description,
+        category
+    });
+    // adding new Expense to the contact in which 
+    // it has been added;
+    const savedExpense=await expense.save();
+    const contact=await Contact.findById(contactId);
+    contact.expenses=await contact.expenses.concat(savedExpense._id);
+    await contact.save();
     console.log("THIS IS THE EXPENSE FROM THE CONTROLLER");
-    return res.status(200).json({ message: "expense created successfully", expense });
+    return res.status(200).json({ message: "expense created successfully", savedExpense });
 })
 module.exports = expenseRouter;

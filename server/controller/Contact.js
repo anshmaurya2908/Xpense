@@ -32,7 +32,7 @@ const removeContactFromUserSchema = async (userId, contactData) => {
     if (!user) 
       return null;
     // removing ContactData From the list of contacts
-    user.contacts=user.contacts.filter(contact=>contact._id!=contactData._id);
+    user.contacts=user.contacts.filter(contact=>contact._id.toString()!=contactData._id.toString());
     const savedUser=await user.save();
     if(!savedUser)return null;
     return ;

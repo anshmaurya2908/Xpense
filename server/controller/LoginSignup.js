@@ -10,9 +10,9 @@ const validateEmail = (email) => {
 };
 loginSignupRouter.post('/signup',async(req,res)=>{
     // got data from frontend
-    const { userName, email, password } = req.body;
+    const { username, email, password } = req.body;
     // checking if all the fields are entered
-    if (!(userName && email && password)) {
+    if (!(username && email && password)) {
         return res.status(400).json({ message: 'enter all the fields '});
     }
     // Validating the format of Email entered using Regex
@@ -20,8 +20,10 @@ loginSignupRouter.post('/signup',async(req,res)=>{
     if (!validEmail) {
         return res.status(400).json({ message: "invalid email" });
     }
-    const checkUsername=await User.find({userName:userName});
-    const checkEmail=await User.find({email:email});
+    const checkUsername=await User.findOne({username:username});
+    const checkEmail=await User.findOne({email:email});
+    console.log(checkUsername);
+    console.log(checkEmail);
     if(checkUsername||checkEmail){
         return  res.status(401).json({message:"username or email already exist"});
     }
@@ -29,7 +31,7 @@ loginSignupRouter.post('/signup',async(req,res)=>{
     const salt = 10;
     const encryptedPassword = await bcrypt.hash(password, salt);
     const user = await User.create({
-        userName,
+        username,
         email,
         password: encryptedPassword
     })
