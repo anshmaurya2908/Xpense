@@ -35,7 +35,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 // routes
 app.use('/user',loginSignupRouter);
-app.use('/addexpense', expenseRouter);
+app.use('/', expenseRouter);
 app.use('/',contactRouter);
 app.use('/user',userRouter);
 // app.get('/check', restrictedToLoggedinUserOnly, (req, res) => {

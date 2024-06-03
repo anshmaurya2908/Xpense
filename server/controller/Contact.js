@@ -37,6 +37,12 @@ const removeContactFromUserSchema = async (userId, contactData) => {
     if(!savedUser)return null;
     return ;
 }
+contactRouter.post('/contact',async(req,res)=>{
+    const {contactId}=req.body;
+    const contact=await Contact.findById(contactId).populate('expenses');
+   // console.log(contact);
+    res.status(200).send(contact);
+})
 contactRouter.post('/addcontact',async(req,res)=>{
     const {name,number}=req.body;
     if(!name||!number){

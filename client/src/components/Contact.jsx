@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import delete_img from '../assets/delete_img.jpg';
+import delete_img from '../assets/delete_img.png';
 import { useNavigate } from 'react-router-dom';
 
 const baseUrl = 'http://localhost:8000';

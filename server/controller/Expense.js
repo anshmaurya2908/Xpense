@@ -14,7 +14,7 @@ async function addTimestamp() {
     const timestamp = `${hours}:${minutes}:${seconds} - ${date}/${month}/${year}`;
     return timestamp;
 }
-expenseRouter.post('/',async(req,res)=>{
+expenseRouter.post('/addexpense',async(req,res)=>{
     // get data from user
     const amount = parseInt(req.body.amount);
     const { description, category,contactId } = req.body;
@@ -35,5 +35,17 @@ expenseRouter.post('/',async(req,res)=>{
     await contact.save();
     console.log("THIS IS THE EXPENSE FROM THE CONTROLLER");
     return res.status(200).json({ message: "expense created successfully", savedExpense });
+})
+expenseRouter.post('/removeexpense',async(req,res)=>{
+    const { expenseId, contactId } = req.body;
+        const deletedExpense = await Expense.findByIdAndDelete(expenseId);
+        if (!deletedExpense) {
+            return res.status(404).json({ message: "Expense not found", expenseId });
+        }
+        // If contactId is provided, remove the expense from the contact's expenses array
+        await Contact.updateOne(
+            { _id: contactId },
+            { $pull: { expenses: expenseId }}
+        );
 })
 module.exports = expenseRouter;

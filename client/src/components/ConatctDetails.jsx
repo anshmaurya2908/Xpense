@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
+import delete_img from '../assets/delete_img.png';
 import axios from 'axios';
-const baseUrl='http://localhost:8000';
+
+const baseUrl = 'http://localhost:8000';
+
 const ContactDetails = () => {
   const location = useLocation();
   const { contact } = location.state;
@@ -12,32 +15,79 @@ const ContactDetails = () => {
     "category": "food",
     "description": "",
   });
+
+  const fetchExpenseList = async () => {
+    console.log('fetch Expenses Called');
+    try {
+      const fetchededContact = await axios.post(`${baseUrl}/contact`,
+        {
+          contactId: contact._id
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          withCredentials: true,
+        }
+      );
+      setExpenseList(fetchededContact.data.expenses);
+    } catch (error) {
+      console.error("Error fetching expenses:", error);
+    }
+  };
+
   useEffect(() => {
-    setExpenseList(contact.expenses);
+    fetchExpenseList();
   }, []);
+
   const handleExpenseChange = (event) => {
     setNewExpense({ ...newexpense, [event.target.name]: event.target.value });
   };
+
   const handleAddExpense = async () => {
-    await axios.post(`${baseUrl}/addexpense`, {
-      amount: newexpense.amount,
-      category: newexpense.category,
-      description: newexpense.description,
-      contactId: contact._id,
-    }, {
-      headers: {
-        'Content-Type': 'application/json'
-      },
-    });
-    // Refresh the expense list
-    setExpenseList([...expenselist, {
-      amount: newexpense.amount,
-      category: newexpense.category,
-      description: newexpense.description,
-    }]);
-    setShowForm(false);
-    setNewExpense({ "amount": 0, "category": "food", "description": "" });
+    try {
+      await axios.post(`${baseUrl}/addexpense`, {
+        amount: newexpense.amount,
+        category: newexpense.category,
+        description: newexpense.description,
+        contactId: contact._id,
+      }, {
+        headers: {
+          'Content-Type': 'application/json'
+        },
+      });
+      // Refresh the expense list
+      await fetchExpenseList();
+      setShowForm(false);
+      setNewExpense({ "amount": 0, "category": "food", "description": "" });
+    } catch (error) {
+      console.error("Error adding expense:", error);
+    }
   };
+
+  const handleRemoveExpense = async (expenseId) => {
+    let confirm = window.confirm(`Remove this from this Expense list`);
+    if (!confirm) return;
+    try {
+      await axios.post(`${baseUrl}/removeexpense`,
+        {
+          expenseId: expenseId,
+          contactId: contact._id,
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          withCredentials: true,
+        }
+      );
+      // Refresh the expense list
+      await fetchExpenseList();
+    } catch (error) {
+      console.error("Error removing expense:", error);
+    }
+  };
+
   return (
     <div className="container mx-auto">
       <h2 className="text-3xl font-bold mb-6">Mutual Expenses with {contact.name}</h2>
@@ -49,15 +99,22 @@ const ContactDetails = () => {
               <th className="py-2 px-4 border-b">Amount</th>
               <th className="py-2 px-4 border-b">Category</th>
               <th className="py-2 px-4 border-b">Description</th>
+              <th className="py-2 px-4 border-b">Remove</th>
             </tr>
           </thead>
           <tbody>
             {expenselist.map((expense, index) => (
-              <tr key={index}>
+              <tr key={expense._id}>
                 <td className="py-2 px-4 border-b">Expense {index + 1}</td>
                 <td className="py-2 px-4 border-b">{expense.amount}</td>
                 <td className="py-2 px-4 border-b">{expense.category}</td>
                 <td className="py-2 px-4 border-b">{expense.description}</td>
+                <td className="py-2 px-4 border-b">
+                  <img src={delete_img} alt="remove"
+                    onClick={() => { handleRemoveExpense(expense._id) }}
+                    className="cursor-pointer"
+                    style={{ width: '20px', height: '20px' }} />
+                </td>
               </tr>
             ))}
           </tbody>
