@@ -21,7 +21,6 @@ function AddExpense({ avatar, handleAvatarChange, amount, handleAmount, descript
                     className="bg-white h-[50px] px-4 mt-1 block w-full border border-gray-300 rounded-xl p-2 focus:outline-none focus:ring-2 focus:ring-purple-800 hover:shadow-md"
                     required
                 />
-
                 <input
                     type="text"
                     id="description"

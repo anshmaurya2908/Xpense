@@ -13,7 +13,6 @@ const validateEmail = (email) => {
 async function handleUserSignup(req, res) {
     // got data from frontend
     const { userName, email, password } = req.body;
-
     // checking if all the fields are entered
     if (!(userName && email && password)) {
         return res.status(400).json({ message: 'enter all the fields' });

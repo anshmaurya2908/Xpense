@@ -5,11 +5,12 @@ import Navbar from './components/Navbar';
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import ExpensePage from "./components/ExpensePage";
 import About from "./components/About";
-import Contact from "./components/ContactDetails";
 import History from "./components/History";
 import AddExpense from "./components/AddExpense";
 import UserContacts from "./components/UserContacts";
 import ContactDetails from "./components/ContactDetails";
+import Dashboard from "./components/Dashboard";
+import ContactUs from "./components/ContactUs";
 
 function App() {
   return (
@@ -27,9 +28,11 @@ function App() {
           <Routes>
             <Route path="/about" element={<About />} />
           </Routes>
-
           <Routes>
-            <Route path="/contact" element={<Contact />} />
+            <Route path="/contact" element={<ContactDetails/>} />
+          </Routes>
+          <Routes>
+            <Route path="/contactus" element={<ContactUs />} />
           </Routes>
 
           <Routes>
@@ -55,7 +58,9 @@ function App() {
           <Routes>
             <Route path="/contactdetails" element={<ContactDetails />} />
           </Routes>
-
+          <Routes>
+            <Route path="/dashboard" element={<Dashboard />} />
+          </Routes>
           <Routes>
             <Route path="/history" element={<History />} />
           </Routes>

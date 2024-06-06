@@ -32,7 +32,6 @@ function Signup() {
   // handleSubmit function
   const handleSubmit = async () => {
     try {
-
       const res = await axios.post(`${process.env.REACT_APP_USER_SIGNUP}`, {
         userName: userName,
         email: email,
