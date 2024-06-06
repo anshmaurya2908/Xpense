@@ -29,9 +29,9 @@ passport.use(new GoogleStrategy({
         const user = await new User({
             userName: profile.displayName,
             email: profile.emails[0].value,
-            password: 'your*password*is*not*stored*in*the*database'
+            password: 'your*password*is*not*stored*in*the*database',
         }).save();
- 
+
         console.log("Google Profile is: ", profile);
 
         done(null, user);

@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
+
 const UserSchema = mongoose.Schema({
-    username: {
+    userName: {
         type: String,
         required: true,
         unique: true,
@@ -14,18 +15,17 @@ const UserSchema = mongoose.Schema({
         type: String,
         required: true,
     },
-    contacts:[
-        {
+    contacts: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Contact'
-        },
-    ],
-    history:[
-        {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'History'
-        }
-    ]
+    }],
+    expenses: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Expense'
+    }]
+
 }, { timestamps: true });
+
 const User = mongoose.model('user', UserSchema);
+
 module.exports = User;

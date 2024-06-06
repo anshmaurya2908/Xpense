@@ -5,14 +5,21 @@ import Navbar from './components/Navbar';
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import ExpensePage from "./components/ExpensePage";
 import About from "./components/About";
-import Contact from "./components/Contact";
-import ConatctDetails from "./components/ConatctDetails";
+import Contact from "./components/ContactDetails";
+import History from "./components/History";
+import AddExpense from "./components/AddExpense";
+import UserContacts from "./components/UserContacts";
+import ContactDetails from "./components/ContactDetails";
+
 function App() {
   return (
     <>
       <BrowserRouter>
+
         <Navbar />
+
         <div>
+
           <Routes>
             <Route path="/" element={<Home />} />
           </Routes>
@@ -36,9 +43,23 @@ function App() {
           <Routes>
             <Route path="/expensepage" element={<ExpensePage />} />
           </Routes>
-           <Routes>
-            <Route path="/contactdetails" element={<ConatctDetails />} />
+
+          <Routes>
+            <Route path="/addexpense" element={<AddExpense />} />
           </Routes>
+
+          <Routes>
+            <Route path="/addcontacts" element={<UserContacts />} />
+          </Routes>
+
+          <Routes>
+            <Route path="/contactdetails" element={<ContactDetails />} />
+          </Routes>
+
+          <Routes>
+            <Route path="/history" element={<History />} />
+          </Routes>
+
         </div>
       </BrowserRouter>
     </>

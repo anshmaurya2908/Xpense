@@ -1,19 +1,19 @@
 const mongoose = require('mongoose');
+
 const expenseSchema = mongoose.Schema({
-    amount: {
+    Amount: {
         type: Number,
         required: true,
     },
-    description: {
+    Description: {
         type: String,
-        required: true,
     },
-    category: {
+    Category: {
         type: String,
         required: true
-    },
+    }
 }, { timestamps: true });
 
 const Expense = mongoose.model('Expense', expenseSchema);
 
-module.exports = Expense;
+module.exports = Expense ;
