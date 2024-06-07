@@ -33,7 +33,7 @@ function Login() {
             const data = res.data;
             if (data.boolValue) {
                 login();  // Update the authentication state
-                navigate("/expensepage");
+                navigate("/dashboard");
             }
         } catch (error) {
             console.log("Error : ", error);

@@ -71,7 +71,7 @@ function AddExpense({ avatar, handleAvatarChange, amount, handleAmount, descript
                 ))}
             </div>
 
-            {/* <style jsx>{`
+            <style jsx>{`
                         .hide-scrollbar::-webkit-scrollbar {
                             display: none;
                         }
@@ -79,8 +79,7 @@ function AddExpense({ avatar, handleAvatarChange, amount, handleAmount, descript
                             -ms-overflow-style: none;
                             scrollbar-width: none;
                         }`}
-                </style> */}
-
+            </style>
         </>
     )
 }

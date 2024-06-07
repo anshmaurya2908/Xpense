@@ -2,9 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import axios from 'axios';
 import ContactExpense from './ContactExpense';
-
 const baseUrl = 'http://localhost:8000';
-
 const ContactDetails = () => {
   const location = useLocation();
   const { contactId } = location.state;
@@ -100,6 +98,15 @@ const ContactDetails = () => {
               <span className="text-xl">Add Expense</span>
           </button>
       </div>
+      <style jsx>{`
+                        .hide-scrollbar::-webkit-scrollbar {
+                            display: none;
+                        }
+                        .hide-scrollbar {
+                            -ms-overflow-style: none;
+                            scrollbar-width: none;
+                        }`}
+      </style>
       <ContactExpense expenses={expenses} totalexpense={totalexpense} fetchExpenseList={fetchExpenseList} contactId={contactId}/>
     </>
   );

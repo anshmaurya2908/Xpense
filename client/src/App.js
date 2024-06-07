@@ -1,73 +1,27 @@
-import Signup from "./components/Signup";
-import Login from "./components/Login";
-import Home from "./components/Home";
+import React from 'react';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Navbar from './components/Navbar';
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-import ExpensePage from "./components/ExpensePage";
-import About from "./components/About";
-import History from "./components/History";
-import AddExpense from "./components/AddExpense";
-import UserContacts from "./components/UserContacts";
-import ContactDetails from "./components/ContactDetails";
-import Dashboard from "./components/Dashboard";
-import ContactUs from "./components/ContactUs";
-
+import Home from './components/Home';
+import About from './components/About';
+import ContactUs from './components/ContactUs';
+import Signup from './components/Signup';
+import Login from './components/Login';
+import Dashboard from './components/Dashboard';
 function App() {
   return (
-    <>
-      <BrowserRouter>
-
-        <Navbar />
-
-        <div>
-
-          <Routes>
-            <Route path="/" element={<Home />} />
-          </Routes>
-
-          <Routes>
-            <Route path="/about" element={<About />} />
-          </Routes>
-          <Routes>
-            <Route path="/contact" element={<ContactDetails/>} />
-          </Routes>
-          <Routes>
-            <Route path="/contactus" element={<ContactUs />} />
-          </Routes>
-
-          <Routes>
-            <Route path="/signup" element={<Signup />} />
-          </Routes>
-
-          <Routes>
-            <Route path="/login" element={<Login />} />
-          </Routes>
-
-          <Routes>
-            <Route path="/expensepage" element={<ExpensePage />} />
-          </Routes>
-
-          <Routes>
-            <Route path="/addexpense" element={<AddExpense />} />
-          </Routes>
-
-          <Routes>
-            <Route path="/addcontacts" element={<UserContacts />} />
-          </Routes>
-
-          <Routes>
-            <Route path="/contactdetails" element={<ContactDetails />} />
-          </Routes>
-          <Routes>
-            <Route path="/dashboard" element={<Dashboard />} />
-          </Routes>
-          <Routes>
-            <Route path="/history" element={<History />} />
-          </Routes>
-
-        </div>
-      </BrowserRouter>
-    </>
+    <BrowserRouter>
+      <Navbar />
+      <div>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/contactus" element={<ContactUs />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/dashboard/*" element={<Dashboard />} />
+        </Routes>
+      </div>
+    </BrowserRouter>
   );
 }
 
