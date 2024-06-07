@@ -10,14 +10,6 @@ const Dashboard = () => {
   return (
     <div className="flex">
       <UserContacts />
-      <div className="flex-grow">
-        <Routes>
-          <Route path="/dashboard/analytics" element={<Analytics />} />
-          <Route path="/dashboard/contactdetails" element={<ContactDetails />} />
-          <Route path="/dashboard/expensepage" element={<ExpensePage />} />
-          <Route path="/dashboard/history" element={<History />} />
-        </Routes>
-      </div>
     </div>
   );
 }

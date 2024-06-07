@@ -7,6 +7,10 @@ import ContactUs from './components/ContactUs';
 import Signup from './components/Signup';
 import Login from './components/Login';
 import Dashboard from './components/Dashboard';
+import Analytics from './components/Analytics';
+import ContactDetails from './components/ContactDetails';
+import ExpensePage from './components/ExpensePage';
+import History from './components/History';
 function App() {
   return (
     <BrowserRouter>
@@ -18,7 +22,14 @@ function App() {
           <Route path="/contactus" element={<ContactUs />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/dashboard/*" element={<Dashboard />} />
+        </Routes>
+        <Routes>
+          <Route path="/dashboard" element={<Dashboard />}>
+            <Route path="analytics" element={<Analytics />} />
+            <Route path="contactdetails" element={<ContactDetails />} />
+            <Route path="expensepage" element={<ExpensePage />} />
+            <Route path="history" element={<History/>} />
+          </Route>
         </Routes>
       </div>
     </BrowserRouter>
