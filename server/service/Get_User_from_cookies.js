@@ -22,6 +22,7 @@ async function GetUserFromCookies(req, res) {
         // return res.status(404).json({ msg: "invalid user" });
         return null;
     }
+    
     return user;
 }
 

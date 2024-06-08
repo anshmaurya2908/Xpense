@@ -1,26 +1,22 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 // ContactList.js
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import deleteSvg from '../assets/delete.svg';
 import { useNavigate } from 'react-router-dom';
-
 const baseUrl = 'http://localhost:8000';
-
 function ContactList() {
     const [contacts, setContacts] = useState([]);
     const [name, setName] = useState("");
     const [phoneNumber, setPhoneNumber] = useState("");
-
     const handlePhoneNumber = (e) => {
         const value = e.target.value;
         setPhoneNumber(value);
     };
-
     const handleName = (e) => {
         const value = e.target.value;
         setName(value);
     };
-
     const handleSubmitContact = async () => {
         try {
             const res = await axios.post(`${baseUrl}/addcontact`, {
@@ -37,7 +33,6 @@ function ContactList() {
             console.log("Error : ", error);
         }
     };
-
     const fetchContacts = async () => {
         try {
             const res = await axios.get(`${baseUrl}/user/contacts`, {
@@ -45,7 +40,7 @@ function ContactList() {
             });
             const contactData = res.data;
             console.log("Contact Data for testing...", contactData);
-            setContacts(contactData.contactList);
+            await setContacts(contactData.contactList);
             console.log("Contact Data", contacts);
         } catch (error) {
             console.log("Error fetching contacts:", error);
@@ -71,9 +66,9 @@ function ContactList() {
     useEffect(() => {
         fetchContacts();
     }, []);
-    const navigate = useNavigate;
+    const navigate = useNavigate();
     const handleContactDetails = (contact) => {
-    navigate('/contactdetails', { state: { contactId: contact._id } });
+    navigate('/dashboard/contactdetails', { state: { contactId: contact._id } });
   };
     return (
         <div className="border sm:border-gray-50 sm:rounded-none w-full sm:w-2/3 lg:w-3/4 p-4 lg:mx-7 lg:my-7 shadow-md m-2 bg-white bg-opacity-60 sm:bg-opacity-80 flex flex-col items-center lg:rounded-2xl md:rounded-2xl transition duration-200">
@@ -82,7 +77,6 @@ function ContactList() {
                     My Contacts
                 </div>
             </div>
-
             <div className="w-full max-w-md flex flex-col items-center space-y-4 rounded-lg p-4 lg:max-w-lg xl:max-w-xl">
                 <input
                     type="text"
@@ -130,16 +124,15 @@ function ContactList() {
                     </div>
                 ))}
             </div>
-
-            <style jsx>{`
-                .hide-scrollbar::-webkit-scrollbar {
-                    display: none;
-                }
-                .hide-scrollbar {
-                    -ms-overflow-style: none;
-                    scrollbar-width: none;
-                }`}
-            </style>
+            {<style jsx>{`
+                        .hide-scrollbar::-webkit-scrollbar {
+                            display: none;
+                        }
+                        .hide-scrollbar {
+                            -ms-overflow-style: none;
+                            scrollbar-width: none;
+                        }`}
+            </style>}
         </div>
     );
 }

@@ -87,10 +87,10 @@ async function handleContactDelete(req, res) {
 
 // getting contact details
 
-async function handleContactDetails(req,res){
-    const {contactId}=req.body;
-    const contact=await Contact.findById(contactId).populate('expenses');
-   // console.log(contact);
+async function handleContactDetails(req, res) {
+    const { contactId } = req.body;
+    const contact = await Contact.findById(contactId).populate('expenses');
+    // console.log(contact);
     res.status(200).send(contact)
 }
-module.exports = { handleContact, handleContactDelete ,handleContactDetails};
+module.exports = { handleContact, handleContactDelete, handleContactDetails };

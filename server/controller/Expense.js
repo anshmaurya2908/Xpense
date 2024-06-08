@@ -27,7 +27,7 @@ async function handleExpense(req, res) {
     const { Description, Category, contactId } = req.body;
 
     // check all the fields are entered
-    if (!(Amount && Category)) {
+    if (!(Amount && Description && Category)) {
         return res.status(400).json({ message: 'Enter all the fields' });
     }
 
