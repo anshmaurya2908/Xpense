@@ -23,7 +23,6 @@ async function handleUserProfileInfo(req, res) {
         if (!userInDatabase) {
             return res.status(404).json({ message: "User not found in database" });
         }
-
         return res.status(200).json({ message: "User profile", user: userInDatabase });
     } catch (error) {
         console.error("Error fetching user profile:", error);

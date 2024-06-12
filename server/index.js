@@ -32,7 +32,7 @@ const app = express();
 
 // Middlewares
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true}));
 app.use(cookieParser());
 app.use(cors({
     origin: 'http://localhost:3000',
@@ -51,18 +51,23 @@ app.use(passport.session());
 // uploading the uploaded images 
 // at the local folder created here
 
-const storage=multer.diskStorage({destination:'./upload/images',
+const storage=multer.diskStorage({
+destination:'./upload/images',
 filename:(req,file,cb)=>{
     return cb(null,`${file.fieldname}_${Date.now()}${path.extname(file.originalname)}`)
 },
 })
 const upload=multer({
     storage:storage
-})
+}
+)
 
-app.use('/images',express.static('upload/images'));
+app.use('/images',express.static(path.join(__dirname,'/upload/images')));
 // route for handling image upload
 app.post('/upload',upload.single('image'),(req,res)=>{
+    if(!req.file){
+        return res.status(400).json({success:0,message:'no file'});
+    }
     res.json({
         success:1,
         image_url:`http://localhost:${process.env.PORT}/images/${req.file.filename}`,
@@ -100,7 +105,6 @@ app.get('/auth/google/callback',
             sameSite: 'strict',
             path: '/',
         });
-
         // on successful Login it will be redirected to the frontend expense page
         res.redirect(process.env.EXPENSE_PAGE_REDIRECT_URI);
     }
