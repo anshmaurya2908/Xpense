@@ -5,30 +5,37 @@ import dashboardSvg from '../assets/dashboard.svg';
 import historySvg from '../assets/history.svg';
 import moneySvg from '../assets/money.svg';
 import axios from 'axios';
+
 const baseUrl = 'http://localhost:8000';
+
 function Dashboard() {
     const [avatar, setAvatar] = useState(null);
-    const [image,setImage]=useState(null);
-    const [userName,setUserName]=useState(null);
-    const handleNewImage = async(e) => {
+    const [image, setImage] = useState(null);
+    const [userName, setUserName] = useState(null);
+    const handleNewImage = (e) => {
         setImage(e.target.files[0]);
+        setAvatar(URL.createObjectURL(e.target.files[0]));
     };
-    const fetchUser=async()=>{
-        // fetching userinfo to update username and ImageUrl 
-        const res=await axios.get(`${baseUrl}/user/profile`,{
-            withCredentials:true,
-        });
-        const user=res.data.user;
-        // user Object containing detailsInfo of user;
-        //  console.log(user);
-        setUserName(user.userName);
-        // setAvatar(URL.createObjectURL(user.image_url));
-    }
-    useEffect(()=>{
+    const fetchUser = async () => {
+        // fetching user for showing username and image_url access from user;
+        try {
+            const res = await axios.get(`${baseUrl}/user/profile`, {
+                withCredentials: true,
+            });
+            const user = res.data.user;
+            setUserName(user.userName);
+            setAvatar(user.image_url);  // Assuming `image_url` is the correct field
+        } catch (error) {
+            console.error('Error fetching user data:', error);
+        }
+    };
+
+    useEffect(() => {
         fetchUser();
-    },[])
-    const uploadImage = async (req,res) => {
-        // formData for sending image to backend in the form of key-value
+    }, []);
+
+    const uploadImage = async () => {
+        // uploading image to backend route
         let formdata = new FormData();
         formdata.append('image', image);
         try {
@@ -39,11 +46,13 @@ function Dashboard() {
                 },
             });
             console.log(resp);
+            fetchUser();  // Refresh user data after uploading the image
+            setImage(null);
         } catch (error) {
             console.error('Error uploading avatar:', error);
         }
-        fetchUser();
     };
+
     return (
         <div className="flex flex-col sm:flex-row h-[92.4vh] overflow-y-auto bg-gradient-to-r from-gray-300 via-[#c595d1] to-[#d4c6d9]">
             {/* LEFT SECTION */}
@@ -53,46 +62,53 @@ function Dashboard() {
                         <input name='image' type="file" onChange={handleNewImage} className="hidden" id="avatar" />
                         <label htmlFor="avatar" className="cursor-pointer">
                             <img
-                                src={avatar?avatar:'https://cdn.pixabay.com/photo/2023/02/01/09/25/cristiano-ronaldo-7760045_960_720.png'}
+                                src={avatar ? avatar : 'https://cdn.pixabay.com/photo/2023/02/01/09/25/cristiano-ronaldo-7760045_960_720.png'}
                                 alt="Avatar"
                                 className="rounded-full w-24 h-24 border-4 border-white hover:border-gray-400 transition duration-200"
                             />
                         </label>
-                        <button className="text-black bg-red-500" onClick={uploadImage}>upload</button>
                     </div>
                     <h2 className="text-lg font-semibold text-gray-700 sm:text-xl">{userName}</h2>
+                    {image && (
+                        <button 
+                            className="mt-2 px-4 py-2 text-white bg-blue-500 rounded-lg hover:bg-blue-600 transition duration-200"
+                            onClick={uploadImage}
+                        >
+                            Upload
+                        </button>
+                    )}
                 </div>
                 <div className="flex-grow w-[100%]">
                     <ul className="flex flex-col items-center gap-2">
                         <li className="mb-2 flex items-center justify-center w-full">
-                            <div className="text-gray-700 hover:text-gray-400 font-bold flex items-center justify-start border border-gray-50 hover:border-gray-300 p-4 rounded-lg sm:rounded-3xl shadow-md hover:shadow-lg transition duration-200 text-xl" style={{ width: "90%" }} >
-                              <Link  to= "dashcontent"> <img src={dashboardSvg} alt="Dashboard" className="w-8 h-8 fill-current mr-2" />
-                                Dashboard
-                            </Link>
-                            </div>
-                        </li>
-                        <li className="mb-2 flex items-center justify-center w-full">
-                            <div className="text-gray-700 hover:text-gray-400 font-bold flex items-center justify-start border border-gray-50 hover:border-gray-300 p-4 rounded-lg sm:rounded-3xl shadow-md hover:shadow-lg transition duration-200 text-xl" style={{ width: "90%" }} >
-                                <Link to ="addexpense">
-                                <img src={moneySvg} alt="Money" className="w-8 h-8 fill-current mr-2" />
-                                Add Expense
+                            <div className="text-gray-700 hover:text-gray-400 font-bold flex items-center justify-start border border-gray-50 hover:border-gray-300 p-4 rounded-lg sm:rounded-3xl shadow-md hover:shadow-lg transition duration-200 text-xl" style={{ width: "90%" }}>
+                                <Link to="dashcontent">
+                                    <img src={dashboardSvg} alt="Dashboard" className="w-8 h-8 fill-current mr-2" />
+                                    Dashboard
                                 </Link>
                             </div>
                         </li>
                         <li className="mb-2 flex items-center justify-center w-full">
-                            <div className="text-gray-700 hover:text-gray-400 font-bold flex items-center justify-start border border-gray-50 hover:border-gray-300 p-4 rounded-lg sm:rounded-3xl shadow-md hover:shadow-lg transition duration-200 text-xl" style={{ width: "90%" }} >
-                                <Link to ="contacts">
-                                <img src={contactSvg} alt="Contacts" className="w-8 h-8 fill-current mr-2" />
-                                Contacts
+                            <div className="text-gray-700 hover:text-gray-400 font-bold flex items-center justify-start border border-gray-50 hover:border-gray-300 p-4 rounded-lg sm:rounded-3xl shadow-md hover:shadow-lg transition duration-200 text-xl" style={{ width: "90%" }}>
+                                <Link to="addexpense">
+                                    <img src={moneySvg} alt="Money" className="w-8 h-8 fill-current mr-2" />
+                                    Add Expense
                                 </Link>
                             </div>
                         </li>
-
                         <li className="mb-2 flex items-center justify-center w-full">
-                            <div className="text-gray-700 hover:text-gray-400 font-bold flex items-center justify-start border border-gray-50 hover:border-gray-300 p-4 rounded-lg sm:rounded-3xl shadow-md hover:shadow-lg transition duration-200 text-xl" style={{ width: "90%" }} >
-                                <Link to = "history">
-                                <img src={historySvg} alt="History" className="w-8 h-8 fill-current mr-2" />
-                                History
+                            <div className="text-gray-700 hover:text-gray-400 font-bold flex items-center justify-start border border-gray-50 hover:border-gray-300 p-4 rounded-lg sm:rounded-3xl shadow-md hover:shadow-lg transition duration-200 text-xl" style={{ width: "90%" }}>
+                                <Link to="contacts">
+                                    <img src={contactSvg} alt="Contacts" className="w-8 h-8 fill-current mr-2" />
+                                    Contacts
+                                </Link>
+                            </div>
+                        </li>
+                        <li className="mb-2 flex items-center justify-center w-full">
+                            <div className="text-gray-700 hover:text-gray-400 font-bold flex items-center justify-start border border-gray-50 hover:border-gray-300 p-4 rounded-lg sm:rounded-3xl shadow-md hover:shadow-lg transition duration-200 text-xl" style={{ width: "90%" }}>
+                                <Link to="history">
+                                    <img src={historySvg} alt="History" className="w-8 h-8 fill-current mr-2" />
+                                    History
                                 </Link>
                             </div>
                         </li>
@@ -101,10 +117,10 @@ function Dashboard() {
             </div>
             {/* RIGHT SECTION */}
             <div className="border sm:border-gray-50 sm:rounded-none w-full sm:w-2/3 lg:w-3/4 p-4 lg:mx-7 lg:my-7 shadow-md m-2 bg-white bg-opacity-60 sm:bg-opacity-80 flex flex-col items-center lg:rounded-2xl md:rounded-2xl transition duration-200">
-            <Outlet/>
+                <Outlet />
             </div>
         </div>
     );
 }
 
-export default Dashboard
+export default Dashboard;

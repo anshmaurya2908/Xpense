@@ -3,7 +3,6 @@ const User = require('../models/User');
 
 // // this function is to obtain user from jwt token stored in the cookies
 const GetUserFromCookies = require('../service/Get_User_from_cookies');
-
 async function handleUserProfileInfo(req, res) {
     try {
         const user = await GetUserFromCookies(req, res);
@@ -29,8 +28,6 @@ async function handleUserProfileInfo(req, res) {
         return res.status(500).json({ message: "Internal Server Error" });
     }
 }
-
-
 async function handleGetContactInfo(req, res) {
     const user = await GetUserFromCookies(req, res);
     if (!user) {

@@ -12,6 +12,7 @@ const validateEmail = (email) => {
 
 async function handleUserSignup(req, res) {
     // got data from frontend
+    // console.log(req.body);
     const { userName, email, password } = req.body;
 
     // checking if all the fields are entered

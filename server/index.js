@@ -3,7 +3,6 @@ const express = require('express');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const { signUser } = require('./service/auth');
-const multer=require('multer');
 const path=require('path');
 // passport google 
 const passport = require('passport');
@@ -23,6 +22,7 @@ const getUserProfile = require('./routes/User');
 const getUserContact = require('./routes/User');
 const getUserExpenses= require('./routes/User');
 const logoutRoute= require('./routes/Logout');
+const imageUploadRoute=require('./routes/Upload')
 const { fileURLToPath } = require('url');
 // connect to MongoDB
 connectToMongoDB(process.env.MONGODB_URI);
@@ -47,33 +47,9 @@ app.use(session({
 }));
 app.use(passport.initialize());
 app.use(passport.session());
-
-// uploading the uploaded images 
-// at the local folder created here
-
-const storage=multer.diskStorage({
-destination:'./upload/images',
-filename:(req,file,cb)=>{
-    return cb(null,`${file.fieldname}_${Date.now()}${path.extname(file.originalname)}`)
-},
-})
-const upload=multer({
-    storage:storage
-}
-)
-
 app.use('/images',express.static(path.join(__dirname,'/upload/images')));
-// route for handling image upload
-app.post('/upload',upload.single('image'),(req,res)=>{
-    if(!req.file){
-        return res.status(400).json({success:0,message:'no file'});
-    }
-    res.json({
-        success:1,
-        image_url:`http://localhost:${process.env.PORT}/images/${req.file.filename}`,
-    })
-})
 // routes
+app.use('/',imageUploadRoute);
 app.use('/', homeRoute);
 app.use('/user', userRoute);
 app.use('/user', logoutRoute);
