@@ -23,6 +23,7 @@ const getUserContact = require('./routes/User');
 const getUserExpenses= require('./routes/User');
 const logoutRoute= require('./routes/Logout');
 const imageUploadRoute=require('./routes/Upload')
+const passwordResetRoute=require('./routes/PasswordReset')
 const { fileURLToPath } = require('url');
 // connect to MongoDB
 connectToMongoDB(process.env.MONGODB_URI);
@@ -49,6 +50,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use('/images',express.static(path.join(__dirname,'/upload/images')));
 // routes
+app.use('/',passwordResetRoute);
 app.use('/',imageUploadRoute);
 app.use('/', homeRoute);
 app.use('/user', userRoute);
