@@ -15,9 +15,9 @@ const UserSchema = mongoose.Schema({
         type: String,
         required: true,
     },
-    image_url:{
-        type:String,
-        default:null,
+    image_url: {
+        type: String,
+        default: null,
     },
     contacts: [{
         type: mongoose.Schema.Types.ObjectId,

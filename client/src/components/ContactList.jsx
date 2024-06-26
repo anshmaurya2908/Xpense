@@ -1,14 +1,16 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-// ContactList.js
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import deleteSvg from '../assets/delete.svg';
 import { useNavigate } from 'react-router-dom';
+
 const baseUrl = 'http://localhost:8000';
+
 function ContactList() {
     const [contacts, setContacts] = useState([]);
     const [name, setName] = useState("");
     const [phoneNumber, setPhoneNumber] = useState("");
+
+    // onChange functions
     const handlePhoneNumber = (e) => {
         const value = e.target.value;
         setPhoneNumber(value);
@@ -17,6 +19,8 @@ function ContactList() {
         const value = e.target.value;
         setName(value);
     };
+
+    // Add Contact
     const handleSubmitContact = async () => {
         try {
             const res = await axios.post(`${baseUrl}/addcontact`, {
@@ -26,29 +30,32 @@ function ContactList() {
                 withCredentials: true,
             });
             const contactData = res.data;
-            console.log("Contact data ", contactData);
+            //console.log("Contact data ", contactData);
             // Fetch the updated list of contacts after adding a new one
             fetchContacts();
         } catch (error) {
             console.log("Error : ", error);
         }
     };
+
+    // fetch contacts
     const fetchContacts = async () => {
         try {
             const res = await axios.get(`${baseUrl}/user/contacts`, {
                 withCredentials: true,
             });
             const contactData = res.data;
-            console.log("Contact Data for testing...", contactData);
+            //console.log("Contact Data for testing...", contactData);
             await setContacts(contactData.contactList);
-            console.log("Contact Data", contacts);
+            //console.log("Contact Data", contacts);
         } catch (error) {
             console.log("Error fetching contacts:", error);
         }
     };
 
+    // Delete Contact
     const handleDeleteContact = async (deleteId) => {
-        console.log("Deleting contact with ID:", deleteId);
+        //console.log("Deleting contact with ID:", deleteId);
         try {
             const res = await axios.post(`${baseUrl}/removecontact`, {
                 id: deleteId
@@ -56,7 +63,7 @@ function ContactList() {
                 withCredentials: true,
             });
             const Response = res.data;
-            console.log("The deleted user was:", Response);
+            //console.log("The deleted user was:", Response);
             fetchContacts();
         } catch (error) {
             console.log("Error deleting contact:", error);
@@ -66,12 +73,15 @@ function ContactList() {
     useEffect(() => {
         fetchContacts();
     }, []);
+
+    // onClick to navigate to the ContactDetails 
     const navigate = useNavigate();
     const handleContactDetails = (contact) => {
-    navigate('/dashboard/contactdetails', { state: { contactId: contact._id } });
-  };
+        navigate('/dashboard/contactdetails', { state: { contactId: contact._id } });
+    };
+
     return (
-        <div className="border sm:border-gray-50 sm:rounded-none w-full sm:w-2/3 lg:w-3/4 p-4 lg:mx-7 lg:my-7 shadow-md m-2 bg-white bg-opacity-60 sm:bg-opacity-80 flex flex-col items-center lg:rounded-2xl md:rounded-2xl transition duration-200">
+        <>
             <div className="w-full lg:w-[60%] mt-4 space-y-4 mb-4 p-4 flex justify-center border border-gray-300 rounded-lg sm:rounded-3xl shadow-md hover:shadow-lg transition duration-200">
                 <div className="text-2xl font-bold text-purple-800">
                     My Contacts
@@ -109,7 +119,7 @@ function ContactList() {
 
             <div className="w-full lg:w-[60%] mt-4 space-y-4 overflow-y-auto overflow-hidden hide-scrollbar">
                 {contacts.map((contact, index) => (
-                    <div key={index} className="p-4 border border-gray-300 rounded-lg sm:rounded-3xl shadow-md hover:shadow-lg transition duration-200 bg-white">
+                    <div key={index} className="p-4 border border-gray-300 rounded-lg sm:rounded-3xl shadow-md hover:shadow-lg transition duration-200">
                         <div className="flex justify-between items-center">
                             <div className="flex flex-col">
                                 <span className="text-md font-semibold uppercase text-purple-800" onClick={() => handleContactDetails(contact)}>{contact.name}</span>
@@ -133,7 +143,7 @@ function ContactList() {
                             scrollbar-width: none;
                         }`}
             </style>}
-        </div>
+        </>
     );
 }
 

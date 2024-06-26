@@ -5,7 +5,9 @@ import dateSvg from '../assets/date.svg';
 import messageSvg from '../assets/message.svg';
 import axios from 'axios'
 import deleteSvg from '../assets/delete.svg';
+
 const baseUrl = 'http://localhost:8000';
+
 const ContactDetails = () => {
     const location = useLocation();
     const { contactId } = location.state;
@@ -17,6 +19,7 @@ const ContactDetails = () => {
         "category": "food",
         "description": "",
     });
+
     // Expense of a contact using ContactID 
     const fetchExpenseList = async () => {
         try {
@@ -47,10 +50,12 @@ const ContactDetails = () => {
             setOldExpenses([...expenses].reverse());
         }
     }, [expenses]);
+
     // onChange function
     const handleExpenseChange = (event) => {
         setNewExpense({ ...newexpense, [event.target.name]: event.target.value });
     };
+
     // Add Expense of the contact
     const handleAddExpense = async () => {
         try {
@@ -72,6 +77,8 @@ const ContactDetails = () => {
             console.error("Error adding expense:", error);
         }
     };
+
+    // Remove Expense of the contact
     const handleRemoveExpense = async (expenseId) => {
         let confirm = window.confirm(`Remove this from this Expense list`);
         if (!confirm) return;
@@ -96,6 +103,14 @@ const ContactDetails = () => {
     };
     return (
         <>
+            <div className="w-full lg:w-[60%] mt-4 space-y-4 mb-4 p-4 flex justify-center border border-gray-300 rounded-lg sm:rounded-3xl shadow-md hover:shadow-lg transition duration-200">
+                <div className="text-2xl font-bold text-purple-800">
+                    Total Expense : <span className={`text-2xl ${totalexpense < 0 ? 'text-red-500' : 'text-green-500'}`}>
+                        &#8377;{Math.abs(totalexpense)}
+                    </span>
+                </div>
+            </div>
+            
             <div className="w-full max-w-md flex flex-col items-center space-y-4 rounded-lg p-4 lg:max-w-lg xl:max-w-xl">
                 <input
                     type="number"
@@ -131,11 +146,7 @@ const ContactDetails = () => {
                     <span className="text-xl">Add Expense</span>
                 </button>
             </div>
-             <div className="w-full lg:w-[60%] mt-4 space-y-4 mb-4 p-4 flex justify-center border border-gray-300 rounded-lg sm:rounded-3xl shadow-md hover:shadow-lg transition duration-200">
-                <div className="text-2xl font-bold text-purple-800">
-                    Total Expense : <span className="text-red-500 text-2xl">&#8377;{totalexpense}</span>
-                </div>
-            </div>
+            
             <div className="w-full lg:w-[60%] mt-4 space-y-4 overflow-y-auto overflow-hidden hide-scrollbar">
                 {oldexpenses.map((expense, index) => (
                     <div key={index} className="p-4 border border-gray-300 rounded-lg sm:rounded-3xl shadow-md hover:shadow-lg transition duration-200">

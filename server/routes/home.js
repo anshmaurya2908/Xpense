@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 router.get('/', (req, res) => {
-    // console.log('Hello Im Home page');
+    console.log('Hello Im Home page');
     const token = req.cookies.token; 
     if (token) {
         // If valid: send the token to the frontend

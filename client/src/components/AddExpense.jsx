@@ -2,7 +2,9 @@ import React, { useEffect, useState } from 'react';
 import dateSvg from '../assets/date.svg';
 import messageSvg from '../assets/message.svg';
 import axios from 'axios';
+
 const baseUrl = 'http://localhost:8000';
+
 function AddExpense() {
     const [expenses, setExpenses] = useState([]);
     const [oldexpenses, setOldExpenses] = useState([]);
@@ -12,18 +14,20 @@ function AddExpense() {
         category: "food",
         description: "",
     });
-    // Expense of a contact using ContactID 
+    // Fetch Expense  
     const fetchExpenseList = async () => {
         try {
             const res = await axios.get(`${baseUrl}/user/expenses`, {
                 withCredentials: true,
             });
             const userData = res.data;
+            //console.log("User Data : ", userData);
             setExpenses(userData.expenses);
         } catch (error) {
             console.log("Error fetching expenses:", error);
         }
     };
+
     useEffect(() => {
         fetchExpenseList();
     }, []);
@@ -34,10 +38,12 @@ function AddExpense() {
             setOldExpenses([...expenses].reverse());
         }
     }, [expenses]);
+
     // onChange function
     const handleExpenseChange = (event) => {
         setNewExpense({ ...newexpense, [event.target.name]: event.target.value });
     };
+
     // Add Expense of the contact
     const handleAddExpense = async () => {
         try {
@@ -63,9 +69,12 @@ function AddExpense() {
         <>
             <div className="w-full lg:w-[60%] mt-4 space-y-4 mb-4 p-4 flex justify-center border border-gray-300 rounded-lg sm:rounded-3xl shadow-md hover:shadow-lg transition duration-200">
                 <div className="text-2xl font-bold text-purple-800">
-                    Total Expense : <span className="text-red-500 text-2xl">&#8377;{totalexpense}</span>
+                    Total Expense : <span className={`text-2xl ${totalexpense < 0 ? 'text-red-500' : 'text-green-500'}`}>
+                        &#8377;{Math.abs(totalexpense)}
+                    </span>
                 </div>
             </div>
+
             <div className="w-full max-w-md flex flex-col items-center space-y-4 rounded-lg p-4 lg:max-w-lg xl:max-w-xl">
                 <input
                     type="number"
@@ -86,7 +95,7 @@ function AddExpense() {
                     onChange={handleExpenseChange}
                     className="bg-white h-[50px] px-4 mt-1 block w-full border border-gray-300 rounded-xl p-2 focus:outline-none focus:ring-2 focus:ring-purple-800 hover:shadow-md"
                 />
-                <select value={newexpense.category} name="category" onChange={handleExpenseChange} className="bg-white h-[50px] px-4 mt-1 block w-full border border-gray-300 rounded-xl p-2 focus:outline-none focus:ring-2 focus:ring-purple-800 hover:shadow-md">
+                <select value={newexpense.category} name="category" onChange={handleExpenseChange} className="bg-white h-[50px] px-4 mt-1 block w-full border border-gray-300 rounded-xl p-2 focus:outline-none focus:ring-2 focus:ring-purple-800 hover:shadow-md ">
                     <option value="food">Food</option>
                     <option value="udhar">Udhar</option>
                     <option value="travel">Travel</option>

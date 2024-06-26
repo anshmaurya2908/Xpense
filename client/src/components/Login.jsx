@@ -1,12 +1,14 @@
-import React from 'react';
-import { useState,useContext } from 'react';
+import React, { useEffect, useContext } from 'react';
+import { useState } from 'react';
 import GoogleLogo from '../assets/google.svg';
-import axios from 'axios';
 import { Link, useNavigate } from "react-router-dom";
+import axios from 'axios';
 import { AuthContext } from '../Context/AuthContext';
+
 function Login() {
-    const {login } = useContext(AuthContext);
     const navigate = useNavigate();
+    const { login } = useContext(AuthContext);
+
     // Implementation of Show Password
     const [showPassword, setShowPassword] = useState(false);
     const [email, setEmail] = useState('');
@@ -22,6 +24,7 @@ function Login() {
         const value = e.target.value;
         setPassword(value);
     }
+
     // handleSubmit
     const handleSubmit = async () => {
         try {
@@ -36,8 +39,8 @@ function Login() {
             console.log("data in frontend testing...", data);
             const boolValue = data.boolValue;
             if (boolValue) {
-                login();
-                navigate("/dashboard")
+                login();  // Update the authentication state
+                navigate("/dashboard/dashcontent")
             }
             console.log(data);
 
@@ -49,9 +52,7 @@ function Login() {
     // // Redirect to Google login page and then i can login and data will be stored in backend
     const handleGoogle = async (req, res) => {
         try {
-
             window.location.href = `${process.env.REACT_APP_GOOGLE_LOGIN_URI}`;
-
         } catch (error) {
             console.log("error : ", error);
         }
@@ -81,13 +82,18 @@ function Login() {
                     <input type={showPassword ? 'text' : 'password'}
                         name="Password"
                         placeholder="Password" onChange={handlePassword} className='bg-transparent border border-red-600 text-white h-[40px] px-[10px] ' />
+
                     <div className='flex justify-between'>
-                    <button type="button" onClick={() => setShowPassword(!showPassword)} className=' px-[12px] w-[40px] text-gray-400 font-medium '> {showPassword ? 'Hide' : 'Show'}
-                    </button>
-                    <p type="button"  className='px-[12px] w-[auto] text-gray-400 font-medium '> 
-                        <Link to='/forgotpassword'>Forgot Password</Link> 
-                    </p>
+                        {/* showPassword */}
+                        <button type="button" onClick={() => setShowPassword(!showPassword)} className=' px-[12px] w-[40px] text-gray-400 font-medium '> {showPassword ? 'Hide' : 'Show'}
+                        </button>
+
+                        {/* ForgotPassword */}
+                        <p type="button" className='px-[12px] w-[auto] text-gray-400 font-medium '>
+                            <Link to='/forgotpassword'>Forgot Password</Link>
+                        </p>
                     </div>
+
                 </div>
 
                 <div className='flex justify-center items-center h-[40px] bg-[#0664D3] hover:bg-[#4d8be5] text-white font-bold mx-4 ' >
@@ -112,9 +118,8 @@ function Login() {
                         <span>Google</span>
                     </button>
                 </div>
-
             </div>
-        </div>
+        </div >
     )
 }
 

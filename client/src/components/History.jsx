@@ -2,12 +2,15 @@ import React, { useState, useEffect } from 'react';
 import dateSvg from '../assets/date.svg';
 import messageSvg from '../assets/message.svg';
 import axios from 'axios';
+
 const baseUrl = 'http://localhost:8000';
-function History(){
+
+function History() {
     const [expenses, setExpenses] = useState([]);
     const [oldexpenses, setOldExpenses] = useState([]);
     const [totalexpense, setTotalExpense] = useState(0);
-     // Expense of a contact using ContactID 
+
+    // Expense of a contact using ContactID 
     const fetchExpenseList = async () => {
         try {
             const res = await axios.get(`${baseUrl}/user/expenses`, {
@@ -23,17 +26,21 @@ function History(){
         fetchExpenseList();
     }, []);
 
+    // use Effect to make the expense list reverse whenever expense is added
     useEffect(() => {
         if (expenses.length) {
             setTotalExpense(expenses.reduce((acc, expense) => acc + expense.Amount, 0));
             setOldExpenses([...expenses].reverse());
         }
     }, [expenses]);
+
     return (
         <>
             <div className="w-full lg:w-[60%] mt-4 space-y-4 mb-4 p-4 flex justify-center border border-gray-300 rounded-lg sm:rounded-3xl shadow-md hover:shadow-lg transition duration-200">
                 <div className="text-2xl font-bold text-purple-800">
-                    Total Expense : <span className="text-red-500 text-2xl">&#8377;{totalexpense}</span>
+                    Total Expense : <span className={`text-2xl ${totalexpense < 0 ? 'text-red-500' : 'text-green-500'}`}>
+                        &#8377;{Math.abs(totalexpense)}
+                    </span>
                 </div>
             </div>
             <div className="w-full lg:w-[60%] mt-4 space-y-4 overflow-y-auto overflow-hidden hide-scrollbar">

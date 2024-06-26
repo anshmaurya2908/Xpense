@@ -3,11 +3,14 @@ const express = require('express');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const { signUser } = require('./service/auth');
-const path=require('path');
+
 // passport google 
 const passport = require('passport');
 require('./passport');
 const session = require('express-session');
+
+//path
+const path = require('path');
 
 // connection with mongoDB
 const { connectToMongoDB } = require('./connection');
@@ -20,11 +23,15 @@ const contactRoute = require('./routes/Contact');
 const { restrictedToLoggedinUserOnly } = require('./middlewares/auth');
 const getUserProfile = require('./routes/User');
 const getUserContact = require('./routes/User');
-const getUserExpenses= require('./routes/User');
-const logoutRoute= require('./routes/Logout');
+const getUserExpenses = require('./routes/User');
+const logoutRoute = require('./routes/Logout');
+//multer image upload
 const imageUploadRoute=require('./routes/Upload')
-const passwordResetRoute=require('./routes/PasswordReset')
-const { fileURLToPath } = require('url');
+//claude Anthropic AI
+const anthropicAIRouter = require('./routes/AnthropicAI');
+//NodeMailer
+const passwordResetRoute = require('./routes/PasswordReset');
+
 // connect to MongoDB
 connectToMongoDB(process.env.MONGODB_URI);
 
@@ -33,12 +40,13 @@ const app = express();
 
 // Middlewares
 app.use(express.json());
-app.use(express.urlencoded({ extended: true}));
+app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(cors({
     origin: 'http://localhost:3000',
     credentials: true,
 }));
+app.use('/images',express.static(path.join(__dirname,'/upload/images')));
 
 // middlewares for google authentication
 app.use(session({
@@ -48,18 +56,19 @@ app.use(session({
 }));
 app.use(passport.initialize());
 app.use(passport.session());
-app.use('/images',express.static(path.join(__dirname,'/upload/images')));
+
 // routes
-app.use('/',passwordResetRoute);
-app.use('/',imageUploadRoute);
 app.use('/', homeRoute);
 app.use('/user', userRoute);
 app.use('/user', logoutRoute);
 app.use('/', expenseRoute);
 app.use('/', contactRoute);
+app.use('/',imageUploadRoute);
 app.use('/user', getUserProfile);
 app.use('/user', getUserContact);
-app.use('/user',getUserExpenses);
+app.use('/user', getUserExpenses);
+app.use('/api', anthropicAIRouter);
+app.use('/', passwordResetRoute);
 
 // app.get('/check', restrictedToLoggedinUserOnly, (req, res) => {
 //     return res.json({ message: "Middleware is Working" });
@@ -83,6 +92,7 @@ app.get('/auth/google/callback',
             sameSite: 'strict',
             path: '/',
         });
+
         // on successful Login it will be redirected to the frontend expense page
         res.redirect(process.env.EXPENSE_PAGE_REDIRECT_URI);
     }

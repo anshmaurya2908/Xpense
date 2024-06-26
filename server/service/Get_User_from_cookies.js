@@ -27,12 +27,3 @@ async function GetUserFromCookies(req, res) {
 }
 
 module.exports = GetUserFromCookies;
-
-// // THE TOKEN SHOULD BE STORED IN THE BODY IN THE FORMAT
-// {
-//     "name" : "G",
-//     "number": "12364589621",
-//     "cookies":{
-//         "token": "XXX.JWT_TOKEN."
-//     }
-// }

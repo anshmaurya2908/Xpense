@@ -3,6 +3,7 @@ const User = require('../models/User');
 
 // // this function is to obtain user from jwt token stored in the cookies
 const GetUserFromCookies = require('../service/Get_User_from_cookies');
+
 async function handleUserProfileInfo(req, res) {
     try {
         const user = await GetUserFromCookies(req, res);
@@ -22,12 +23,15 @@ async function handleUserProfileInfo(req, res) {
         if (!userInDatabase) {
             return res.status(404).json({ message: "User not found in database" });
         }
+
         return res.status(200).json({ message: "User profile", user: userInDatabase });
     } catch (error) {
         console.error("Error fetching user profile:", error);
         return res.status(500).json({ message: "Internal Server Error" });
     }
 }
+
+
 async function handleGetContactInfo(req, res) {
     const user = await GetUserFromCookies(req, res);
     if (!user) {
